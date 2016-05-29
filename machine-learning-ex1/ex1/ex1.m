@@ -56,14 +56,15 @@ X = [ones(m, 1), data(:,1)]; % Add a column of ones to x
 theta = zeros(2, 1); % initialize fitting parameters
 
 % Some gradient descent settings
-iterations = 1500;
+iterations = 15000;
 alpha = 0.01;
 
 % compute and display initial cost
 computeCost(X, y, theta)
 
 % run gradient descent
-theta = gradientDescent(X, y, theta, alpha, iterations);
+[theta, J_history] = gradientDescent(X, y, theta, alpha, iterations);
+
 
 % print theta to screen
 fprintf('Theta found by gradient descent: ');
@@ -74,6 +75,9 @@ hold on; % keep previous plot visible
 plot(X(:,2), X*theta, '-')
 legend('Training data', 'Linear regression')
 hold off % don't overlay any more plots on this figure
+
+figure
+plot([1:length(J_history)], J_history)
 
 % Predict values for population sizes of 35,000 and 70,000
 predict1 = [1, 3.5] *theta;
@@ -120,3 +124,8 @@ contour(theta0_vals, theta1_vals, J_vals, logspace(-2, 3, 20))
 xlabel('\theta_0'); ylabel('\theta_1');
 hold on;
 plot(theta(1), theta(2), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
+hold off;
+
+%% Check with matlab regression
+lm = LinearModel.fit(X, y)
+plot(lm);
